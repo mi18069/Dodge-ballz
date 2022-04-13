@@ -168,7 +168,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 4157164379670791511, guid: e8fe099fd4abdb2cdb488619524015c5, type: 3}
-  spawnPoint: {x: 0, y: 0.35, z: 6.2}
+  spawnPoint: {x: 0, y: 0.35, z: 7}
   enemies: []
   spawnTime: 10
   maxEnemy: 20
