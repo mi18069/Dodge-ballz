@@ -6,6 +6,8 @@ public class PlayerMovement : MonoBehaviour
 {
 
     [SerializeField, Range(1,5)] private float speed = 1.5f;
+    [SerializeField] private ParticleSystem playerExplosion;
+
     private float horizontal;
     private float vertical;
     private double maxFlyingTime = 1.0;
@@ -15,14 +17,13 @@ public class PlayerMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("OnStart");
         
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, 0f, 1.0f), transform.position.z); // FIX THIS
+        transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, 0f, 1.1f), transform.position.z); // FIX THIS
         // Uncomment in order to debug
         // Debug.Log(flyingTime);
         getInput();
@@ -59,5 +60,16 @@ public class PlayerMovement : MonoBehaviour
     private void Move(){
         Vector3 changeInPosition = new Vector3(horizontal, 0f, vertical);
         transform.Translate(changeInPosition * Time.deltaTime * speed);
+    }
+
+    void OnCollisionEnter(Collision other)
+    {
+
+        if(other.transform.tag == "Enemy"){
+            playerExplosion.Play();
+            Debug.Log("POW");      
+  
+        }
+        
     }
 }
