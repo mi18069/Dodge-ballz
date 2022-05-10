@@ -66,9 +66,7 @@ public class PlayerMovement : MonoBehaviour
     {
 
         if(other.transform.tag == "Enemy"){
-            playerExplosion.Play();
-            Debug.Log("POW");      
-  
+            playerExplosion.Play();  
         }
         
     }
