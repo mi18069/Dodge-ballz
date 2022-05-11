@@ -7,7 +7,6 @@ TagManager:
   - Plane
   - Gate
   - Igrac
-  - Enemy
   layers:
   - Default
   - TransparentFX
