@@ -6,6 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
 
     [SerializeField, Range(1,5)] private float speed = 1.5f;
+
     private float horizontal;
     private float vertical;
     public double maxFlyingTime = 1.0;
@@ -14,11 +15,11 @@ public class PlayerMovement : MonoBehaviour
     private bool canBeFilled = true;
 
     public FlyingBar fBar;
+    private bool isDestroyed = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("OnStart");
         
     }
 
@@ -41,7 +42,10 @@ public class PlayerMovement : MonoBehaviour
         fBar.updateFlyingBar();
 
         
-        Move();
+       if(!isDestroyed)
+        {
+            Move();
+        }
     }
 
     private void getInput(){
@@ -77,5 +81,14 @@ public class PlayerMovement : MonoBehaviour
     private void Move(){
         Vector3 changeInPosition = new Vector3(horizontal, 0f, vertical);
         transform.Translate(changeInPosition * Time.deltaTime * speed);
+    }
+
+    void OnCollisionEnter(Collision other)
+    {
+
+        if(other.transform.tag == "Enemy"){
+            isDestroyed = true;
+        }
+        
     }
 }
