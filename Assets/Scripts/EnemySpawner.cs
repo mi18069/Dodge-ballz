@@ -39,6 +39,7 @@ public class EnemySpawner : MonoBehaviour
             GameObject instantiatedEnemy = Instantiate(enemyPrefab, spawnPoint, Quaternion.identity);
             enemies.Add(instantiatedEnemy);
 
+            UIScoreCounter.scoreAmount += 10;
             enemyCount++;
 
             if(enemyCount >= maxEnemy){
