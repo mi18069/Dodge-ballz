@@ -36,7 +36,7 @@ public class MoveGate : MonoBehaviour
             percent = timer / seconds;
 
             transform.position = start + Difference * percent;
-            Debug.Log("kraj " + transform.position + "    start " + start);
+            // Debug.Log("kraj " + transform.position + "    start " + start);
         }
 
 
