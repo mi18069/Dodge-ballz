@@ -6,13 +6,13 @@ public class PlayerMovement : MonoBehaviour
 {
 
     [SerializeField, Range(1,5)] private float speed = 1.5f;
-    [SerializeField] private ParticleSystem playerExplosion;
 
     private float horizontal;
     private float vertical;
     private double maxFlyingTime = 1.0;
     private double flyingTime = 1.0;
     private bool canFly = true;
+    private bool isDestroyed = false;
 
     // Start is called before the first frame update
     void Start()
@@ -27,8 +27,10 @@ public class PlayerMovement : MonoBehaviour
         // Uncomment in order to debug
         // Debug.Log(flyingTime);
         getInput();
-        
-        Move();
+        if(!isDestroyed)
+        {
+            Move();
+        }
     }
 
     private void getInput(){
@@ -66,7 +68,7 @@ public class PlayerMovement : MonoBehaviour
     {
 
         if(other.transform.tag == "Enemy"){
-            playerExplosion.Play();  
+            isDestroyed = true;
         }
         
     }
