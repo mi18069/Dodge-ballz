@@ -6,7 +6,6 @@ TagManager:
   tags:
   - Plane
   - Gate
-  - Igrac
   layers:
   - Default
   - TransparentFX
