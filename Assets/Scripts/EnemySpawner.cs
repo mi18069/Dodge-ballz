@@ -40,6 +40,8 @@ public class EnemySpawner : MonoBehaviour
             instantiatedEnemy.tag="Enemy";
             enemies.Add(instantiatedEnemy);
 
+            UIScoreCounter.scoreAmount += 10;
+
             enemyCount++;
 
             if(enemyCount >= maxEnemy){
