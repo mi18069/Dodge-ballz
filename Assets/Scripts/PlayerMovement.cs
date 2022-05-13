@@ -12,6 +12,7 @@ public class PlayerMovement : MonoBehaviour
     public double flyingTime = 1.0;
     private bool canFly = true;
     private bool canBeFilled = true;
+    private bool isDestroyed = false;
 
     public UIFlyingBar fBar;
 
@@ -40,8 +41,10 @@ public class PlayerMovement : MonoBehaviour
 
         fBar.updateFlyingBar();
 
-        
-        Move();
+        if(!isDestroyed)
+        {
+            Move();
+        }
     }
 
     private void getInput(){
@@ -77,5 +80,14 @@ public class PlayerMovement : MonoBehaviour
     private void Move(){
         Vector3 changeInPosition = new Vector3(horizontal, 0f, vertical);
         transform.Translate(changeInPosition * Time.deltaTime * speed);
+    }
+
+    void OnCollisionEnter(Collision other)
+    {
+
+        if(other.transform.tag == "Enemy"){
+            isDestroyed = true;
+        }
+        
     }
 }
