@@ -65,9 +65,10 @@ public class PlayerMovement : MonoBehaviour
             flying = false;
             rb.AddForce(Vector3.up*3, ForceMode.VelocityChange); // maybe there should be VelocityChange
             flyingTime -= Time.deltaTime;
+            flying = true;
+
             if(flyingTime <= 0){
                 canFly = false;
-                flying = true;
                 flyingTime = 0;
                 rb.velocity = new Vector3(0,0,0); // lose all forces in order to fall down
             }
@@ -81,6 +82,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if(flyingTime > 0.3)
             {
+                flying = true;
                 canFly = true;
             }
             if(canBeFilled)
