@@ -12,7 +12,7 @@ public class PlayerMovement : MonoBehaviour
     public double flyingTime = 1.0;
     private bool canFly = true;
     private bool canBeFilled = true;
-    private bool isDestroyed = false;
+    private static bool isDestroyed = false;
     private bool flying = false;
     private Rigidbody rb;
 
@@ -112,5 +112,10 @@ public class PlayerMovement : MonoBehaviour
             rb.velocity = Vector3.zero;
         }
         
+    }
+
+    public static bool getPlayerStatus(){
+        bool status = isDestroyed;
+        return status;
     }
 }

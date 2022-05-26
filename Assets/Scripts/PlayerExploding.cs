@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerExploding : MonoBehaviour
 {
@@ -25,8 +26,17 @@ public class PlayerExploding : MonoBehaviour
 
         if(other.transform.tag == "Enemy"){
             playerExplosion.Play();  
+            StartCoroutine(GameOverCoroutine());
+
             objectToActivateAndDeactivate.SetActive(false);
         }
         
+    }
+
+    public IEnumerator GameOverCoroutine(){
+        yield return new WaitForSecondsRealtime(2f);
+        
+        
+        SceneManager.LoadScene("GameOver");
     }
 }

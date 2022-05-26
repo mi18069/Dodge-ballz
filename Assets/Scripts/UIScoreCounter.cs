@@ -22,7 +22,13 @@ public class UIScoreCounter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        scoreText.text = "Score: " + (int)scoreAmount;
-        scoreAmount += pointPerSecond * Time.deltaTime;
+        if(PlayerMovement.getPlayerStatus() == false){
+            if(scoreText != null){
+                scoreText.text = "Score: " + (int)scoreAmount;
+                scoreAmount += pointPerSecond * Time.deltaTime;
+            }
+        }else{
+            PlayerPrefs.SetFloat("yourscore", scoreAmount);
+        }
     }
 }
