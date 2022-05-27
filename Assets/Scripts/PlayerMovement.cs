@@ -61,35 +61,38 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.AddForce(Vector3.down, ForceMode.VelocityChange);
         }
-        if(Input.GetKey(KeyCode.Space) && canFly == true)
+        if(!isDestroyed)
         {
-            flying = false;
-            rb.AddForce(Vector3.up*3, ForceMode.VelocityChange); // maybe there should be VelocityChange
-            flyingTime -= Time.deltaTime;
-            flying = true;
-
-            if(flyingTime <= 0){
-                canFly = false;
-                flyingTime = 0;
-                rb.velocity = new Vector3(0,0,0); // lose all forces in order to fall down
-            }
-        }
-        else if(Input.GetKeyUp(KeyCode.Space))
-        {
-            rb.velocity = new Vector3(0,0,0); // lose all forces in order to fall down
-            flying = true;
-        }
-        else if(flyingTime < maxFlyingTime)
-        {
-            if(flyingTime > 0.3)
+            if(Input.GetKey(KeyCode.Space) && canFly == true )
             {
+                flying = false;
+                rb.AddForce(Vector3.up*3, ForceMode.VelocityChange); // maybe there should be VelocityChange
+                flyingTime -= Time.deltaTime;
                 flying = true;
-                canFly = true;
+
+                if(flyingTime <= 0){
+                    canFly = false;
+                    flyingTime = 0;
+                    rb.velocity = new Vector3(0,0,0); // lose all forces in order to fall down
+                }
             }
-            if(canBeFilled)
-                flyingTime += Time.deltaTime * 0.1; // can be done using Mathf.Clamp()
-            if(flyingTime > maxFlyingTime)
-                flyingTime = maxFlyingTime;
+            else if(Input.GetKeyUp(KeyCode.Space))
+            {
+                rb.velocity = new Vector3(0,0,0); // lose all forces in order to fall down
+                flying = true;
+            }
+            else if(flyingTime < maxFlyingTime)
+            {
+                if(flyingTime > 0.3)
+                {
+                    flying = true;
+                    canFly = true;
+                }
+                if(canBeFilled)
+                    flyingTime += Time.deltaTime * 0.1; // can be done using Mathf.Clamp()
+                if(flyingTime > maxFlyingTime)
+                    flyingTime = maxFlyingTime;
+            }
         }
     }
 

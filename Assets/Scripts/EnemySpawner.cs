@@ -37,6 +37,7 @@ public class EnemySpawner : MonoBehaviour
         while(true)
         {        
             GameObject instantiatedEnemy = Instantiate(enemyPrefab, spawnPoint, Quaternion.identity);
+            instantiatedEnemy.tag = "Enemy";
             enemies.Add(instantiatedEnemy);
 
             UIScoreCounter.scoreAmount += 10;
