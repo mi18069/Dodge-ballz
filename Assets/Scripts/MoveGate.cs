@@ -4,12 +4,20 @@ using UnityEngine;
 
 public class MoveGate : MonoBehaviour
 {
-    private float seconds = 3f;
-     public float timer = 0.0f;
+    private float secondsToLift = 3.0f;
+     public float liftingTimer = 0.0f;
+     public float openingTimer = 0.0f;
+     public float waitingTimer = 0.0f;
      public Vector3 Point;
      public Vector3 Difference;
      public Vector3 start;
      public float percent ;
+     public bool isClosed = true;
+     public bool roundFinished = false;
+
+     public float waitingToClose = 2.0f+3.0f+2.0f;
+     public float waitingToOpen = 2.0f;
+     
 
 
 
@@ -17,9 +25,7 @@ public class MoveGate : MonoBehaviour
     void Start()
     {
         start = transform.position;
-        // Debug.Log(start);
         Point = start + new Vector3(0.0f, 1.0f, 0.0f);
-        // Debug.Log(Point);
 
         Difference = Point - start;
 
@@ -29,20 +35,63 @@ public class MoveGate : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-        if(timer <= seconds)
+        if(isClosed)
         {
-            timer += Time.deltaTime;
-            percent = timer / seconds;
+            if(openingTimer > waitingToOpen)
+            {
+                openGate();
+            } 
+            openingTimer += Time.deltaTime;
 
-            transform.position = start + Difference * percent;
-            Debug.Log("kraj " + transform.position + "    start " + start);
+        }else
+        {
+            if(waitingTimer > waitingToClose)
+            {
+                closeGate();
+            }
+            waitingTimer += Time.deltaTime;
+
+        }
+        
+        if(roundFinished == true)
+        {
+            openingTimer = 0.0f;
+            waitingTimer = 0.0f;
+            roundFinished = false;
         }
 
 
+    }
 
+    void openGate()
+    {
+        if(liftingTimer <= secondsToLift)
+        {
+            liftingTimer += Time.deltaTime;
+            percent = liftingTimer / secondsToLift;
 
+            transform.position = start + Difference * percent;
+        }else
+        {
+            liftingTimer = 0.0f;
+            isClosed = false;
+        }
 
+    }
 
+    void closeGate()
+    {
+        if(liftingTimer <= secondsToLift)
+        {
+            liftingTimer += Time.deltaTime;
+            percent = liftingTimer / secondsToLift;
+
+            transform.position = Point-Difference * percent;
+        }else
+        {
+            liftingTimer = 0.0f;
+            isClosed = true;
+            roundFinished = true;
+        }
     }
 }

@@ -5,59 +5,118 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
 
-    [SerializeField, Range(1,5)] private float speed = 1.5f;
+    [SerializeField, Range(1,5)] private float speed = 2.0f;
     private float horizontal;
     private float vertical;
-    private double maxFlyingTime = 1.0;
-    private double flyingTime = 1.0;
+    public double maxFlyingTime = 1.0;
+    public double flyingTime = 1.0;
     private bool canFly = true;
+    private bool canBeFilled = true;
+    private static bool isDestroyed = false;
+    private bool flying = false;
+    private Rigidbody rb;
+
+    public UIFlyingBar fBar;
 
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("OnStart");
-        
+        rb = GetComponent<Rigidbody>(); 
+        isDestroyed = false;
     }
 
     // Update is called once per frame
+
     void Update()
     {
-        transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, 0f, 1.0f), transform.position.z); // FIX THIS
-        // Uncomment in order to debug
-        // Debug.Log(flyingTime);
+    }
+
+    void FixedUpdate()
+    {
+        transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, 0f, 1.1f), transform.position.z); // FIX THIS
+        if(transform.position.y <= 0.36f)
+        {
+            flying = false;
+            canBeFilled = true;
+        }
+        else
+        {
+            canBeFilled = false;
+        }
+
         getInput();
-        
-        Move();
+
+        fBar.updateFlyingBar();
+
+        if(!isDestroyed)
+        {
+            Move();
+        }
     }
 
     private void getInput(){
         horizontal = Input.GetAxis("Horizontal");
         vertical = Input.GetAxis("Vertical");
+        if(flying)
+        {
+            rb.AddForce(Vector3.down, ForceMode.VelocityChange);
+        }
         if(Input.GetKey(KeyCode.Space) && canFly == true)
         {
-            GetComponent<Rigidbody>().AddForce(Vector3.up*15, ForceMode.Force); // maybe there should be VelocityChange
+            flying = false;
+            rb.AddForce(Vector3.up*3, ForceMode.VelocityChange); // maybe there should be VelocityChange
             flyingTime -= Time.deltaTime;
-            if(flyingTime < 0){
+            flying = true;
+
+            if(flyingTime <= 0){
                 canFly = false;
                 flyingTime = 0;
+                rb.velocity = new Vector3(0,0,0); // lose all forces in order to fall down
             }
         }
         else if(Input.GetKeyUp(KeyCode.Space))
         {
-            GetComponent<Rigidbody>().velocity = new Vector3(0,0,0); // lose all forces in order to fall down
+            rb.velocity = new Vector3(0,0,0); // lose all forces in order to fall down
+            flying = true;
         }
         else if(flyingTime < maxFlyingTime)
         {
             if(flyingTime > 0.3)
+            {
+                flying = true;
                 canFly = true;
-            flyingTime += Time.deltaTime * 0.1; // can be done using Mathf.Clamp()
+            }
+            if(canBeFilled)
+                flyingTime += Time.deltaTime * 0.1; // can be done using Mathf.Clamp()
             if(flyingTime > maxFlyingTime)
                 flyingTime = maxFlyingTime;
         }
     }
 
-    private void Move(){
+    private void Move()
+    {
         Vector3 changeInPosition = new Vector3(horizontal, 0f, vertical);
-        transform.Translate(changeInPosition * Time.deltaTime * speed);
+
+        //changeInPosition = changeInPosition.normalized * speed * Time.deltaTime;
+        //rb.MovePosition(transform.position + changeInPosition); // Not working with flying, inertia  
+        
+        rb.velocity = changeInPosition * speed; // Gravity not working properly
+
+        //rb.AddForce(changeInPosition.normalized*speed*0.1f, ForceMode.VelocityChange); // Accumulating too much force 
+    }
+
+    void OnCollisionEnter(Collision other)
+    {
+
+        if(other.transform.tag == "Enemy"){
+            isDestroyed = true;
+            rb.velocity = Vector3.zero;
+        }
+        
+    }
+
+    public static bool getPlayerStatus(){
+        bool status = isDestroyed;
+        return status;
     }
 }

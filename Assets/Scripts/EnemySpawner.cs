@@ -33,11 +33,13 @@ public class EnemySpawner : MonoBehaviour
 
     public IEnumerator SpawnCoroutine()
     {
-        yield return new WaitForSecondsRealtime(3f);
+        yield return new WaitForSecondsRealtime(1f);
         while(true)
         {        
             GameObject instantiatedEnemy = Instantiate(enemyPrefab, spawnPoint, Quaternion.identity);
             enemies.Add(instantiatedEnemy);
+
+            UIScoreCounter.scoreAmount += 10;
 
             enemyCount++;
 
